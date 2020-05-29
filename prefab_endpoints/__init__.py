@@ -24,18 +24,8 @@ class ModelFriendlyJSONEncoder(DjangoJSONEncoder):
             return super().default(obj)
 
 
-def success_wrapper(output):
-    return {'success': output}
-
-def error_wrapper(output):
-    return {'error': output}
-
-
 class BaseEndpoint:
-    request = None
-
-    success_wrapper = success_wrapper
-    error_wrapper = error_wrapper
+    request = None\
 
     def __init__(self, *args, **kwargs):
         self.request: HttpRequest = kwargs.get('request', None)
@@ -93,6 +83,12 @@ class BaseEndpoint:
         else:
             # TODO the rest of the HTTP MethodsS
             raise NotImplementedError(f"Handler for {self.request.method} is not implemented yet.")
+    
+    def success_wrapper(self, output):
+        return {'success': output}
+
+    def error_wrapper(self, output):
+        return {'error': output}
 
 
 class ModelEndpoint(BaseEndpoint):
